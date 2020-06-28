@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fks.dao.IUserDao">
+    
+    <resultMap id="user_role" type="user">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="role_id" column="role_id"/>
+        <association property="role" column="role_id" select="com.fks.dao.IRoleDao.findById"/>
+    </resultMap>
+    
+    <select id="findAllWithRole" resultMap="user_role">
+        select id, name, role_id from user
+    </select>
+
+    <select id="findAll" resultType="user">
+        select id, name, role_id from user
+    </select>
+
+    <select id="findByName" resultType="user">
+        select id, name, password, role_id from user where name = #{name}
+    </select>
+
+    <insert id="save" parameterType="user">
+        insert into user(name, password, role_id) values(#{name}, #{password}, #{role_id})
+    </insert>
+</mapper>

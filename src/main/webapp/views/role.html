@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>角色管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script src="/js/limit.js"></script>
+</head>
+<body>
+<div id="app">
+    <p v-if="limit('role/save')">增加</p>
+    <p v-if="limit('role/edit')">修改</p>
+    <p v-if="limit('role/remove')">删除</p>
+    <p v-if="limit('role/see')">查看</p>
+</div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app'
+    })
+</script>
+</html>

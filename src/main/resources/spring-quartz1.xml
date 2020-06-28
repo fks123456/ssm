@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userJob" class="com.fks.taskJob.UserJob"/>
+    <bean id="SpringQtzJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="userJob"/>
+        <property name="targetMethod" value="execute"/>  <!-- 要执行的方法名称 -->
+    </bean>
+    <bean id="cronTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="SpringQtzJobMethod"></property>
+        <property name="cronExpression" value="* */10 * * * ?"></property>
+    </bean>
+    <!--  总管理类如果将lazy-init='false'那么容器启动就会执行调度程序   -->
+    <bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="true" >
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerFactoryBean" />
+            </list>
+        </property>
+    </bean>
+</beans>

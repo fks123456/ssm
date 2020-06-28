@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script src="/js/limit.js"></script>
+</head>
+<body>
+<div id="app">
+    <p v-if="limit('res/save')">增加</p>
+    <p v-if="limit('res/edit')">修改</p>
+    <p v-if="limit('res/remove')">删除</p>
+    <p v-if="limit('res/see')">查看</p>
+</div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app'
+    })
+</script>
+</html>

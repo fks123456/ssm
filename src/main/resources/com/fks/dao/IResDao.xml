@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fks.dao.IResDao">
+
+    <select id="findAll" resultType="res">
+        select id, res_name from res
+    </select>
+
+    <select id="findByRoleId" resultType="res" parameterType="int">
+        SELECT
+            res.id,
+            res.res_name
+        FROM
+            res,
+            role_res
+        WHERE
+            res.id = role_res.res_id
+        AND role_res.role_id = #{id}
+    </select>
+
+    <select id="findAllResNameByRoleId" resultType="String" parameterType="int">
+        SELECT
+            res.res_name
+        FROM
+            res,
+            role_res
+        WHERE
+            res.id = role_res.res_id
+        AND role_res.role_id = #{role_id}
+    </select>
+
+    <select id="findById" resultType="res" parameterType="int">
+        select id, res_name from res where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页面</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/js/jquery-1.9.1.js"></script>
+    <script src="/js/limit.js"></script>
+</head>
+<body>
+<div id="app">
+    <a href="/user/changPassword?newPassword=111">修改密码</a>
+
+    <br>
+
+    <a href="user.html" v-if="limit('user')">用户管理</a>
+    <a href="role.html" v-if="limit('role')">角色管理</a>
+    <a href="res.html" v-if="limit('res')">权限管理</a>
+</div>
+<input type="button" id="logoutbtn" value="退出">
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app'
+    })
+</script>
+<script>
+    $(function () {
+        $("#logoutbtn").click(function () {
+            $.post(
+                '/user/logout',
+                function (res) {
+                    window.location.href="/login.html"
+                    alert(res)
+                }
+            )
+        })
+    })
+</script>
+</html>

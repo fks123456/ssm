@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 配置凭证算法匹配器 -->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="${algorithName}"/>
+        <property name="hashIterations" value="${hashIterations}"/>
+    </bean>
+
+    <!-- 自定义Realm -->
+    <bean id="userRealm" class="com.fks.realm.UserRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"></property>
+        <property name="salt" value="${salt}"/>
+    </bean>
+
+    <!-- 配置shiro安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"/>
+    </bean>
+
+    <bean id="beanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- shiro工厂bean配置 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- shiro的核心安全接口 -->
+        <property name="securityManager" ref="securityManager"></property>
+        <!-- 要求登录时的连接 -->
+        <property name="loginUrl" value="/views/login.html"></property>
+        <!-- 登录成功后要跳转的连接(此处已经在登录中处理了) -->
+        <!-- <property name="successUrl" value="/index.jsp"></property> -->
+        <!-- 未认证时要跳转的连接 -->
+        <property name="unauthorizedUrl" value="/views/unauthorized.html"></property>
+        <!-- shiro连接约束配置 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 对静态资源设置允许匿名访问 -->
+                /js/** = anon
+                <!-- 可匿名访问路径，例如：验证码、登录连接、退出连接等 -->
+                /view/login.html = anon
+                /user/login = anon
+                <!-- 剩余其他路径，必须认证通过才可以访问 -->
+                /** = authc
+            </value>
+        </property>
+    </bean>
+</beans>
