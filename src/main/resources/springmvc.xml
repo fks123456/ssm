@@ -14,6 +14,8 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <bean class="com.fks.config.SwaggerConfig"/>
+
     <!-- 视图解析器 -->
     <bean id="resourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/views/"/>
